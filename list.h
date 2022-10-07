@@ -1,8 +1,8 @@
 // =================================================================
 //
 // File: list.h
-// Author: José Diego Llca Castro
-// Date: 04/10/2022
+// Author: José Diego Llaca Castro
+// Date: 06/10/2022
 //
 // =================================================================
 #ifndef DOUBLELINKEDLIST_H
