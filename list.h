@@ -1,8 +1,8 @@
 // =================================================================
 //
 // File: list.h
-// Author:
-// Date:
+// Author: José Diego Llca Castro
+// Date: 04/10/2022
 //
 // =================================================================
 #ifndef DOUBLELINKEDLIST_H
@@ -222,8 +222,20 @@ T DoubleLinkedList<T>::last() const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::before(T val) const {
-	
-	return val;
+	if (head->value == val){
+		throw NoSuchElement();
+	}
+
+	Node<T> *q = head;
+
+	for (size_t pos{}; pos < size && q != nullptr; ++pos){
+		if (q->value == val){
+			return q->previous->value;
+		}
+		q = q->next;
+	}
+	throw NoSuchElement();
+	//check
 }
 
 // =================================================================
@@ -233,8 +245,16 @@ T DoubleLinkedList<T>::before(T val) const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::after(T val) const {
-	
-	return val;
+	Node<T> *q = head;
+
+	for (size_t pos{}; pos < size && q->next != nullptr; ++pos){
+		if (q->value == val){
+			return q->next->value;
+		}
+		q = q->next;
+	}
+	throw NoSuchElement();
+	//check
 }
 
 // =================================================================
@@ -294,7 +314,29 @@ void DoubleLinkedList<T>::push_back(T val) {
 // =================================================================
 template <class T>
 void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
-	// TO DO
+	if (!contains(lookingFor)){
+		throw NoSuchElement();
+	}
+
+	else if (lookingFor == head->value){
+		return push_front(newVal);
+	}
+
+	Node<T> *q = head;
+	Node<T> *p = new Node<T> (newVal);
+
+	for (size_t pos{}; pos < size; ++pos){
+		q = q->next;
+		if (q->next->value == lookingFor){
+			break;
+		}
+	}
+	p->next = q->next;
+	q->next = p;
+	p->previous = q;
+
+	++size;
+	//check
 }
 
 // =================================================================
@@ -304,7 +346,31 @@ void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
 // =================================================================
 template <class T>
 void DoubleLinkedList<T>::insert_after(T lookingFor, T newVal) {
-	// TO DO
+	if (!contains(lookingFor)){
+		throw NoSuchElement();
+	}
+
+	Node<T> *q = head;
+
+	while (q != nullptr){
+		if (q->value == lookingFor){
+			Node<T> *p = new Node<T> (newVal, q, q->next);
+
+			if (q->next != nullptr){
+				q->next->previous = p;
+			}
+
+			q->next = p;
+			++size;
+
+			return;
+		}
+
+		q = q->next;
+	}
+
+	throw NoSuchElement();
+	//check
 }
 
 // =================================================================
